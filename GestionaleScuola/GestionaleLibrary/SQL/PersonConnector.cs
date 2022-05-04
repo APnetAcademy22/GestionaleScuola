@@ -51,10 +51,9 @@ namespace GestionaleLibrary.SQL
         }
 
 
-
-        public static Person? RetrievePersons(int idPerson)
+        public static Person? RetrievePersonById(int idPerson)
         {
-            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address FROM Person where Id=@IdPerson";
+            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address FROM Person WHERE Id=@IdPerson";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);

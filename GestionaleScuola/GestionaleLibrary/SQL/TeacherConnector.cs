@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace GestionaleLibrary.SQL
 {
-    public class StudentConnector
+    public class TeacherConnector
     {
-        public static int PersistStudent(Student student)
+        public static int PersistTeacher(Teacher teacher)
         {
-            if(PersonConnector.RetrievePersonById(student.Id)!=null)
+            if (PersonConnector.RetrievePersonById(teacher.Id) != null)
             {
-                return AddStudent(student);
+                return AddTeacher(teacher);
             }
             else
             {
-                int id = PersonConnector.PersistPerson(student);
-                student.Id = id;
-                return AddStudent(student);
+                int id = PersonConnector.PersistPerson(teacher);
+                teacher.Id = id;
+                return AddTeacher(teacher);
             }
-            
+
         }
 
-        public static IEnumerable<Student> RetrieveStudents()
+        public static IEnumerable<Teacher> RetrieveTeachers()
         {
-            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdStudente, Matricola, DataIscrizione FROM Student JOIN Person ON student.IdPerson = Person.id ";
+            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdTeacher, Matricola, DataAssunzione FROM Teacher JOIN Person ON teacher.IdPerson = Person.id ";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
@@ -35,63 +35,63 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Student student = new Student()
+                Teacher teacher = new Teacher()
                 {
-                    StudentId = int.Parse(reader["IdStudente"].ToString()),
+                    TeacherId = int.Parse(reader["IdTeacher"].ToString()),
                     Id = int.Parse(reader["Id"].ToString()),
                     Matricola = reader["Matricola"].ToString(),
-                    EnrollDate = DateTime.Parse(reader["DataIscrizione"].ToString()),
+                    HireDate = DateTime.Parse(reader["DataAssunzione"].ToString()),
                     Name = reader["Name"].ToString(),
                     Surname = reader["Surname"].ToString(),
                     BirthDate = DateTime.Parse(reader["BirthDay"].ToString()),
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                yield return student;
+                yield return teacher;
             }
         }
 
-        public static Student? RetrieveStudentById(int idStudent)
+        public static Teacher? RetrieveTeacherById(int idTeacher)
         {
-            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdStudente, Matricola, DataIscrizione FROM Student JOIN Person ON student.IdPerson = Person.id " +
-                "WHERE IdStudente = @idStudent ;";
+            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdTeacher, Matricola, DataAssunzione FROM Teacher JOIN Person ON teacher.IdPerson = Person.id " +
+                "WHERE Idteacher = @idTeacher ;";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("idStudent", idStudent);
+            command.Parameters.AddWithValue("idTeacher", idTeacher);
 
             using var reader = command.ExecuteReader();
-            Student student = null;
+            Teacher teacher = null;
             while (reader.Read())
             {
-                student = new Student()
+                teacher = new Teacher()
                 {
-                    StudentId = int.Parse(reader["IdStudente"].ToString()),
+                    TeacherId = int.Parse(reader["IdTeacher"].ToString()),
                     Id = int.Parse(reader["Id"].ToString()),
                     Matricola = reader["Matricola"].ToString(),
-                    EnrollDate = DateTime.Parse(reader["DataIscrizione"].ToString()),
+                    HireDate = DateTime.Parse(reader["DataAssunzione"].ToString()),
                     Name = reader["Name"].ToString(),
                     Surname = reader["Surname"].ToString(),
                     BirthDate = DateTime.Parse(reader["BirthDay"].ToString()),
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                
+
             }
-            return student;
+            return teacher;
         }
 
-        private static int AddStudent(Student student)
+        private static int AddTeacher(Teacher teacher)
         {
-            var query = "INSERT INTO Student(IdPerson, Matricola, DataIscrizione) " +
-                        "OUTPUT inserted.IdStudente " +
-                        "VALUES(@IdPerson, @Matricola, @DataIscrizione); ";
+            var query = "INSERT INTO Teacher(IdPerson, Matricola, DataAssunzione) " +
+                        "OUTPUT inserted.IdTeacher " +
+                        "VALUES(@IdPerson, @Matricola, @DataAssunzione); ";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@IdPerson", student.Id);
-                command.Parameters.AddWithValue("@Matricola", student.Matricola);
-                command.Parameters.AddWithValue("@DataIscrizione", student.EnrollDate);
+            command.Parameters.AddWithValue("@IdPerson", teacher.Id);
+            command.Parameters.AddWithValue("@Matricola", teacher.Matricola);
+            command.Parameters.AddWithValue("@DataIscrizione", teacher.HireDate);
             return Convert.ToInt32(command.ExecuteScalar());
         }
     }
