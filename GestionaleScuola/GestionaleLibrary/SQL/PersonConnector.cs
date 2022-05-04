@@ -48,6 +48,34 @@ namespace GestionaleLibrary.SQL
                 };
                 yield return person;
             }
-        } 
+        }
+
+
+
+        public static Person? RetrievePersons(int idPerson)
+        {
+            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address FROM Person where Id=@IdPerson";
+            using var connection = new SqlConnection(Constants.SqlConnectionString);
+            connection.Open();
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", idPerson);
+            Person person = null;
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                person = new Person()
+                {
+                    Id = int.Parse(reader["Id"].ToString()),
+                    Name = reader["Name"].ToString(),
+                    Surname = reader["Surname"].ToString(),
+                    BirthDate = DateTime.Parse(reader["BirthDay"].ToString()),
+                    Gender = reader["Gender"].ToString(),
+                    Address = reader["Address"].ToString()
+                };
+               
+            }
+
+            return person;
+        }
     }
 }

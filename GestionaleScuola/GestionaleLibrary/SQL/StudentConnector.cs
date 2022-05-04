@@ -12,7 +12,7 @@ namespace GestionaleLibrary.SQL
     {
         public static int PersistStudent(Student student)
         {
-            if(PersonConnector.RetrievePersons().Any(person => person.Id == student.Id))
+            if(PersonConnector.RetrievePersons(student.Id)!=null)
             {
                 return AddStudent(student);
             }
