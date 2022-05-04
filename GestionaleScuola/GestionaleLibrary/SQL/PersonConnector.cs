@@ -57,7 +57,7 @@ namespace GestionaleLibrary.SQL
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@Id", idPerson);
+            command.Parameters.AddWithValue("@IdPerson", idPerson);
             Person person = null;
             using var reader = command.ExecuteReader();
             while (reader.Read())

@@ -91,7 +91,7 @@ namespace GestionaleLibrary.SQL
             using var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@IdPerson", teacher.Id);
             command.Parameters.AddWithValue("@Matricola", teacher.Matricola);
-            command.Parameters.AddWithValue("@DataIscrizione", teacher.HireDate);
+            command.Parameters.AddWithValue("@DataAssunzione", teacher.HireDate);
             return Convert.ToInt32(command.ExecuteScalar());
         }
     }
