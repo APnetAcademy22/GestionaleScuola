@@ -10,13 +10,7 @@ namespace GestionaleLibrary.Entities
     {
         public int TeacherId { get; set; }
         public string Matricola { get; set; }
-        public DateOnly HireDate { get; set; }
+        public DateTime HireDate { get; set; }
 
-        public Teacher(int teacherId, string matricola, DateOnly hireDate, int id, string name, string surname, DateOnly birthDay, string gender, string address) : base(id, name, surname, birthDay, gender, address)
-        {
-            TeacherId = teacherId;
-            Matricola = matricola;
-            HireDate = hireDate;
-        }
     }
 }

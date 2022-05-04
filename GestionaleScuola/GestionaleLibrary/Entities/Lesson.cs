@@ -9,14 +9,8 @@ namespace GestionaleLibrary.Entities
     public class Lesson
     {
         public int IdLesson { get; set; }
-        public Teacher Teacher { get; set; }
-        public Subject Subject { get; set; }
+        public int TeacherId { get; set; }
+        public int SubjectId { get; set; }
 
-        public Lesson(int idLesson, Teacher teacher, Subject subject)
-        {
-            IdLesson = idLesson;
-            Teacher = teacher;
-            Subject = subject;
-        }
     }
 }

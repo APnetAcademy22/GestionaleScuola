@@ -10,13 +10,11 @@ namespace GestionaleLibrary.Entities
     {
         public int StudentId { get; set; }
         public string Matricola { get; set; }
-        public DateOnly EnrollDate { get; set; }
+        public DateTime EnrollDate { get; set; }
 
-        public Student( int studentId, string matricola, DateOnly enrollDate, int id, string name, string surname, DateOnly birthDay, string gender, string address) : base(id,name, surname, birthDay, gender, address)
+        public static void AddStudent(Student student)
         {
-            StudentId = studentId;
-            Matricola = matricola;
-            EnrollDate = enrollDate;
+
         }
     }
 }

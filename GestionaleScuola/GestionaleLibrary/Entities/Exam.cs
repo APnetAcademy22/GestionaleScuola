@@ -10,15 +10,9 @@ namespace GestionaleLibrary.Entities
     public class Exam
     {
         public int IdExam { get; set; }
-        public ExamSession Session { get; set; }
-        public Student Student { get; set; }
+        public int SessionId { get; set; }
+        public int StudentId { get; set; }
 
-        public Exam(int idExam, ExamSession session, Student student)
-        {
-            IdExam = idExam;
-            Session = session;
-            Student = student;
-        }
 
     }
 }

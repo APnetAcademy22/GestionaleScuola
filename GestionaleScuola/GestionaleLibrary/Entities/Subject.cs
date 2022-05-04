@@ -14,13 +14,5 @@ namespace GestionaleLibrary.Entities
         public int Credits { get; set; }
         public int Hours { get; set; }
 
-        public Subject (int idSubject, string name, string description, int credits, int hours)
-        {
-            IdSubject = idSubject;
-            Name = name;
-            Description = description;
-            Credits = credits;
-            Hours = hours;
-        }
     }
 }
