@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace GestionaleLibrary.SQL
 {
-    public class StudentConnector
+    public static class StudentConnector
     {
         public static int PersistStudent(Student student)
         {
@@ -30,7 +30,7 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Student student = new Student()
+                yield return new Student()
                 {
                     StudentId = int.Parse(reader["IdStudente"].ToString()),
                     Id = int.Parse(reader["Id"].ToString()),
@@ -41,15 +41,14 @@ namespace GestionaleLibrary.SQL
                     BirthDate = DateTime.Parse(reader["BirthDay"].ToString()),
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
-                };
-                yield return student;
+                }; 
             }
         }
 
         public static Student? RetrieveStudentById(int idStudent)
         {
-            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdStudente, Matricola, DataIscrizione FROM Student JOIN Person ON student.IdPerson = Person.id " +
-                "WHERE IdStudente = @idStudent ;";
+            var query = @"SELECT Id, Name, Surname, BirthDay, Gender, Address, IdStudente, Matricola, DataIscrizione FROM Student JOIN Person ON student.IdPerson = Person.id 
+                    WHERE IdStudente = @idStudent ;";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
@@ -57,7 +56,7 @@ namespace GestionaleLibrary.SQL
 
             using var reader = command.ExecuteReader();
             Student student = null;
-            while (reader.Read())
+            if (reader.Read())
             {
                 student = new Student()
                 {
@@ -78,9 +77,9 @@ namespace GestionaleLibrary.SQL
 
         private static int AddStudent(Student student)
         {
-            var query = "INSERT INTO Student(IdPerson, Matricola, DataIscrizione) " +
-                        "OUTPUT inserted.IdStudente " +
-                        "VALUES(@IdPerson, @Matricola, @DataIscrizione); ";
+            var query = @"INSERT INTO Student(IdPerson, Matricola, DataIscrizione) 
+                        OUTPUT inserted.IdStudente 
+                        VALUES(@IdPerson, @Matricola, @DataIscrizione); ";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);

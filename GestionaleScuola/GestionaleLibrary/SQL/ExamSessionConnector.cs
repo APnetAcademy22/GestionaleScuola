@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace GestionaleLibrary.SQL
 {
-    public class ExamSessionConnector
+    public static class ExamSessionConnector
     {
         public static int PersistExamSession(ExamSession examSession)
         {
@@ -14,9 +14,9 @@ namespace GestionaleLibrary.SQL
             }
             else
             {
-                var query = "INSERT INTO Exam (IdTeacher, Date, IdSubject) " +
-                        "OUTPUT inserted.IdExam " +
-                        "VALUES(@IdTeacher, @date, @SubjectId); ";
+                var query = @"INSERT INTO Exam (IdTeacher, Date, IdSubject) 
+                        OUTPUT inserted.IdExam 
+                        VALUES(@IdTeacher, @date, @SubjectId); ";
                 using var connection = new SqlConnection(Constants.SqlConnectionString);
                 connection.Open();
                 using var command = new SqlCommand(query, connection);
@@ -58,7 +58,7 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
                 command.Parameters.AddWithValue("@sessionId", sessionId);
             ExamSession exSession = null;
-            while (reader.Read())
+            if (reader.Read())
             {
                 exSession = new ExamSession()
                 {

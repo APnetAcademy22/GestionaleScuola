@@ -1,14 +1,9 @@
 ﻿using GestionaleLibrary.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestionaleLibrary.SQL
 {
-    public class TeacherConnector
+    public static class TeacherConnector
     {
         public static int PersistTeacher(Teacher teacher)
         {
@@ -35,7 +30,7 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Teacher teacher = new Teacher()
+                yield return new Teacher()
                 {
                     TeacherId = int.Parse(reader["IdTeacher"].ToString()),
                     Id = int.Parse(reader["Id"].ToString()),
@@ -47,7 +42,7 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                yield return teacher;
+                
             }
         }
 
@@ -89,9 +84,9 @@ namespace GestionaleLibrary.SQL
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@IdPerson", teacher.Id);
-            command.Parameters.AddWithValue("@Matricola", teacher.Matricola);
-            command.Parameters.AddWithValue("@DataAssunzione", teacher.HireDate);
+                command.Parameters.AddWithValue("@IdPerson", teacher.Id);
+                command.Parameters.AddWithValue("@Matricola", teacher.Matricola);
+                command.Parameters.AddWithValue("@DataAssunzione", teacher.HireDate);
             return Convert.ToInt32(command.ExecuteScalar());
         }
     }

@@ -25,11 +25,25 @@ ExamSessionConnector.PersistExamSession( new ExamSession
 
 IEnumerable<ExamSession> sessions = ExamSessionConnector.RetrieveExamSessions();
 IEnumerable<Teacher> teachers = TeacherConnector.RetrieveTeachers();
+IEnumerable<Student> students = StudentConnector.RetrieveStudents();
+IEnumerable<Subject> subjects = SubjectConnector.RetrieveSubjects();
+IEnumerable<Exam> exams = ExamConnector.RetrieveExams();
 
 List<Teacher> maleTeachers = teachers.Where(t => string.Equals(t.Gender, "male", StringComparison.CurrentCultureIgnoreCase) ).ToList<Teacher>();
 foreach(Teacher teacher in maleTeachers)
 {
     Console.WriteLine($"{teacher.Name} {teacher.Surname}");
+}
+
+var teachersQuery = from teacher in teachers
+                        join session in sessions on teacher.TeacherId equals session.TeacherId
+                        join subject in subjects on session.SubjectId equals subject.IdSubject
+                        select $"{teacher.Name}, {teacher.Surname}, {session.Date}, {subject.Name}";
+
+Console.WriteLine($"List of sessions: ");
+foreach(var sessionDetails in teachersQuery)
+{
+    Console.WriteLine(sessionDetails);
 }
 
 

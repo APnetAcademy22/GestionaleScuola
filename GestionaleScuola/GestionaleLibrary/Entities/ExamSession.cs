@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GestionaleLibrary.Entities
+﻿namespace GestionaleLibrary.Entities
 {
     // corrisponde a elementi exam del DB
     public class ExamSession

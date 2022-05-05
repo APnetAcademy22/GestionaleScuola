@@ -1,28 +1,23 @@
 ﻿using GestionaleLibrary.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestionaleLibrary.SQL
 {
-    public class PersonConnector
+    public static class PersonConnector
     {
         public static int PersistPerson(Person person)
         {
-            var query = "INSERT INTO Person ( Name, Surname, BirthDay, Gender, Address) "+
-                        "OUTPUT Inserted.ID " +
-                        "VALUES(@Name, @Surname, @BirthDate, @Gender, @Address)";
+            var query = @"INSERT INTO Person ( Name, Surname, BirthDay, Gender, Address) 
+                        OUTPUT Inserted.ID 
+                        VALUES(@Name, @Surname, @BirthDate, @Gender, @Address)";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Name", person.Name);
-                command.Parameters.AddWithValue("@Surname", person.Surname);
-                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
-                command.Parameters.AddWithValue("@Gender", person.Gender);
-                command.Parameters.AddWithValue("@Address", person.Address);
+            command.Parameters.AddWithValue("@Name", person.Name);
+            command.Parameters.AddWithValue("@Surname", person.Surname);
+            command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+            command.Parameters.AddWithValue("@Gender", person.Gender);
+            command.Parameters.AddWithValue("@Address", person.Address);
 
             return Convert.ToInt32(command.ExecuteScalar());
         }
@@ -37,7 +32,7 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Person person = new Person()
+                yield return new Person()
                 {
                     Id = int.Parse(reader["Id"].ToString()),
                     Name = reader["Name"].ToString(),
@@ -46,7 +41,7 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                yield return person;
+                
             }
         }
 
@@ -71,9 +66,8 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-               
-            }
 
+            }
             return person;
         }
     }

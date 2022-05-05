@@ -1,27 +1,22 @@
 ﻿using GestionaleLibrary.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestionaleLibrary.SQL
 {
-    public class SubjectConnector
+    public static  class SubjectConnector
     {
         public static int PersistSubject(Subject subject)
         {
-            var query = "INSERT INTO subject ( Name, Description, Credits, Hours ) " +
-                            "OUTPUT inserted.IdSubject " +
-                            "VALUES(@Name, @Description, @Credits, @Hours); ";
+            var query = @"INSERT INTO subject ( Name, Description, Credits, Hours ) 
+                            OUTPUT inserted.IdSubject 
+                            VALUES(@Name, @Description, @Credits, @Hours); ";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Name", subject.Name);
-                command.Parameters.AddWithValue("@Description", subject.Description);
-                command.Parameters.AddWithValue("@Credits", subject.Credits);
-                command.Parameters.AddWithValue("@Hours", subject.Hours);
+            command.Parameters.AddWithValue("@Name", subject.Name);
+            command.Parameters.AddWithValue("@Description", subject.Description);
+            command.Parameters.AddWithValue("@Credits", subject.Credits);
+            command.Parameters.AddWithValue("@Hours", subject.Hours);
 
             return Convert.ToInt32(command.ExecuteScalar());
         }
@@ -53,11 +48,11 @@ namespace GestionaleLibrary.SQL
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@subjectId", subjectId);
+            command.Parameters.AddWithValue("@subjectId", subjectId);
 
             using var reader = command.ExecuteReader();
             Subject subject = null;
-            while (reader.Read())
+            if (reader.Read())
             {
                 subject = new Subject()
                 {
@@ -67,7 +62,7 @@ namespace GestionaleLibrary.SQL
                     Credits = int.Parse(reader["Credits"].ToString()),
                     Hours = int.Parse(reader["Hours"].ToString())
                 };
-               
+
             }
             return subject;
         }
