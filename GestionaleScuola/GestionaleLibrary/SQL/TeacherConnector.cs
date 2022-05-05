@@ -53,16 +53,16 @@ namespace GestionaleLibrary.SQL
 
         public static Teacher? RetrieveTeacherById(int idTeacher)
         {
-            var query = "SELECT Id, Name, Surname, BirthDay, Gender, Address, IdTeacher, Matricola, DataAssunzione FROM Teacher JOIN Person ON teacher.IdPerson = Person.id " +
-                "WHERE Idteacher = @idTeacher ;";
+            var query = @"SELECT Id, Name, Surname, BirthDay, Gender, Address, IdTeacher, Matricola, DataAssunzione FROM Teacher JOIN Person ON teacher.IdPerson = Person.id 
+                         WHERE Idteacher = @idTeacher ;";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("idTeacher", idTeacher);
+            command.Parameters.AddWithValue("@idTeacher", idTeacher);
 
-            using var reader = command.ExecuteReader();
             Teacher teacher = null;
-            while (reader.Read())
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
             {
                 teacher = new Teacher()
                 {
@@ -83,9 +83,9 @@ namespace GestionaleLibrary.SQL
 
         private static int AddTeacher(Teacher teacher)
         {
-            var query = "INSERT INTO Teacher(IdPerson, Matricola, DataAssunzione) " +
-                        "OUTPUT inserted.IdTeacher " +
-                        "VALUES(@IdPerson, @Matricola, @DataAssunzione); ";
+            var query = @"INSERT INTO Teacher(IdPerson, Matricola, DataAssunzione)
+                        OUTPUT inserted.IdTeacher 
+                        VALUES(@IdPerson, @Matricola, @DataAssunzione); ";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
             connection.Open();
             using var command = new SqlCommand(query, connection);

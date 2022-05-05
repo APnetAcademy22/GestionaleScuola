@@ -1,10 +1,5 @@
 ﻿using GestionaleLibrary.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GestionaleLibrary.SQL
 {
@@ -19,7 +14,7 @@ namespace GestionaleLibrary.SQL
             }
             else
             {
-                var query = "INSERT INTO Exam(IdTeacher, Date, IdSubject) " +
+                var query = "INSERT INTO Exam (IdTeacher, Date, IdSubject) " +
                         "OUTPUT inserted.IdExam " +
                         "VALUES(@IdTeacher, @date, @SubjectId); ";
                 using var connection = new SqlConnection(Constants.SqlConnectionString);
@@ -43,14 +38,13 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                ExamSession exSession = new ExamSession()
+                yield return new ExamSession()
                 {
                     IdSession = int.Parse(reader["IdExam"].ToString()),
                     TeacherId = int.Parse(reader["IdTeacher"].ToString()),
                     Date = DateTime.Parse(reader["Date"].ToString()),
                     SubjectId = int.Parse(reader["IdSubject"].ToString()),
                 };
-                yield return exSession;
             }
         }
 

@@ -36,7 +36,7 @@ namespace GestionaleLibrary.SQL
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Subject subject = new Subject()
+                yield return new Subject()
                 {
                     IdSubject = int.Parse(reader["IdSubject"].ToString()),
                     Name = reader["Name"].ToString(),
@@ -44,7 +44,6 @@ namespace GestionaleLibrary.SQL
                     Credits = int.Parse(reader["Credits"].ToString()),
                     Hours = int.Parse(reader["Hours"].ToString())
                 };
-                yield return subject;
             }
         }
 

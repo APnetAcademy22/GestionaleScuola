@@ -60,7 +60,7 @@ namespace GestionaleLibrary.SQL
             command.Parameters.AddWithValue("@IdPerson", idPerson);
             Person person = null;
             using var reader = command.ExecuteReader();
-            while (reader.Read())
+            if (reader.Read())
             {
                 person = new Person()
                 {
