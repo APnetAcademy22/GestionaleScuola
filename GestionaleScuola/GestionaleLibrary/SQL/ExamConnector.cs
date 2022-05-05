@@ -52,7 +52,7 @@ namespace GestionaleLibrary.SQL
             }
         }
 
-        public static ExamS? RetrieveExamById(int examId)
+        public static Exam? RetrieveExamById(int examId)
         {
             var query = "SELECT IdExamDetails, IdStudent, IdExam FROM ExamDetails WHERE IdExamDetails = @examId";
             using var connection = new SqlConnection(Constants.SqlConnectionString);
@@ -61,7 +61,7 @@ namespace GestionaleLibrary.SQL
 
             using var reader = command.ExecuteReader();
                 command.Parameters.AddWithValue("@examId", examId);
-            ExamSession ex = null;
+            Exam ex = null;
             while (reader.Read())
             {
                 ex = new Exam()
