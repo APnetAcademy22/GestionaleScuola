@@ -62,7 +62,6 @@ namespace GestionaleLibrary.SQL
                     Credits = int.Parse(reader["Credits"].ToString()),
                     Hours = int.Parse(reader["Hours"].ToString())
                 };
-
             }
             return subject;
         }

@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿
 using GestionaleLibrary.Entities;
 using GestionaleLibrary.SQL;
 
@@ -23,6 +23,7 @@ ExamSessionConnector.PersistExamSession( new ExamSession
                                         });
 */
 
+//PROVA DI QUERY IN LINQ (MOLTO INEFFICIENTE)
 IEnumerable<ExamSession> sessions = ExamSessionConnector.RetrieveExamSessions();
 IEnumerable<Teacher> teachers = TeacherConnector.RetrieveTeachers();
 IEnumerable<Student> students = StudentConnector.RetrieveStudents();
@@ -35,13 +36,13 @@ foreach(Teacher teacher in maleTeachers)
     Console.WriteLine($"{teacher.Name} {teacher.Surname}");
 }
 
-var teachersQuery = from teacher in teachers
+var sessionsQuery = from teacher in teachers
                         join session in sessions on teacher.TeacherId equals session.TeacherId
                         join subject in subjects on session.SubjectId equals subject.IdSubject
                         select $"{teacher.Name}, {teacher.Surname}, {session.Date}, {subject.Name}";
 
 Console.WriteLine($"List of sessions: ");
-foreach(var sessionDetails in teachersQuery)
+foreach(var sessionDetails in sessionsQuery)
 {
     Console.WriteLine(sessionDetails);
 }

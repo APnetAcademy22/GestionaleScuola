@@ -42,7 +42,6 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                
             }
         }
 

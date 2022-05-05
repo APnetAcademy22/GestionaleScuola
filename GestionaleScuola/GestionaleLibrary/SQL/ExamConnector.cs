@@ -24,7 +24,6 @@ namespace GestionaleLibrary.SQL
                 command.Parameters.AddWithValue("@idExam", exam.IdExam);
                 return Convert.ToInt32(command.ExecuteScalar());
             }
-
         }
 
         public static IEnumerable<Exam> RetrieveExams()
@@ -69,6 +68,5 @@ namespace GestionaleLibrary.SQL
             }
             return ex;
         }
-
     }
 }

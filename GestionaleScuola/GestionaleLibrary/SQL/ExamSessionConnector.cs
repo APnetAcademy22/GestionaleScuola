@@ -67,10 +67,8 @@ namespace GestionaleLibrary.SQL
                     Date = DateTime.Parse(reader["Date"].ToString()),
                     SubjectId = int.Parse(reader["IdSubject"].ToString()),
                 };
-                
             }
             return exSession;
         }
-
     }
 }

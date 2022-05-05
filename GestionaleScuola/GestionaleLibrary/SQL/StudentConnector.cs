@@ -17,7 +17,6 @@ namespace GestionaleLibrary.SQL
                 student.Id = id;
                 return AddStudent(student);
             }
-            
         }
 
         public static IEnumerable<Student> RetrieveStudents()
@@ -70,7 +69,6 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                
             }
             return student;
         }

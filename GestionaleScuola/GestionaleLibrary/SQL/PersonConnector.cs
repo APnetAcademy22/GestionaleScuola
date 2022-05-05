@@ -41,7 +41,6 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-                
             }
         }
 
@@ -66,7 +65,6 @@ namespace GestionaleLibrary.SQL
                     Gender = reader["Gender"].ToString(),
                     Address = reader["Address"].ToString()
                 };
-
             }
             return person;
         }
